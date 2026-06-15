@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ticketera-postgres-dev
+    environment:
+      POSTGRES_DB: ticketera
+      POSTGRES_USER: ticketera
+      POSTGRES_PASSWORD: ticketera_password_dev
+      TZ: America/Santiago
+      PGTZ: America/Santiago
+    ports:
+      - "5432:5432"
+    volumes:
+      - ticketera_postgres_dev:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: ticketera-backend-dev
+    environment:
+      ENVIRONMENT: development
+      APP_TIMEZONE: America/Santiago
+      TZ: America/Santiago
+      SECRET_KEY: dev-secret-key
+      DATABASE_URL: postgresql+psycopg2://ticketera:ticketera_password_dev@postgres:5432/ticketera
+      CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
+      UPLOAD_DIR: /app/uploads
+      AUTO_CREATE_TABLES: "true"
+    volumes:
+      - ./backend/app:/app/app
+      - ticketera_uploads_dev:/app/uploads
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+
+  frontend-dev:
+    image: node:20-alpine
+    working_dir: /app
+    command: sh -c "npm install && npm run dev"
+    environment:
+      VITE_API_URL: http://localhost:8000/api/v1
+      VITE_APP_TIMEZONE: America/Santiago
+    volumes:
+      - ./frontend:/app
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  ticketera_postgres_dev:
+  ticketera_uploads_dev:

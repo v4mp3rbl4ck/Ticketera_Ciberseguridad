@@ -1,0 +1,74 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: ticketera-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-ticketera}
+      POSTGRES_USER: ${POSTGRES_USER:-ticketera}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ticketera_password_cambiar}
+      TZ: ${APP_TIMEZONE:-America/Santiago}
+      PGTZ: ${APP_TIMEZONE:-America/Santiago}
+    volumes:
+      - ticketera_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-ticketera} -d ${POSTGRES_DB:-ticketera}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: ticketera-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      APP_NAME: ${APP_NAME:-Ticketera Ciberseguridad y Networking}
+      ENVIRONMENT: ${ENVIRONMENT:-production}
+      APP_TIMEZONE: ${APP_TIMEZONE:-America/Santiago}
+      TZ: ${APP_TIMEZONE:-America/Santiago}
+      SECRET_KEY: ${SECRET_KEY:-cambia-esto-en-produccion}
+      DATABASE_URL: ${DATABASE_URL:-postgresql+psycopg2://ticketera:ticketera_password_cambiar@postgres:5432/ticketera}
+      AUTO_CREATE_TABLES: ${AUTO_CREATE_TABLES:-true}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-480}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost,http://localhost:8080,http://127.0.0.1:8080}
+      BUSINESS_HOUR_START: ${BUSINESS_HOUR_START:-09:00}
+      BUSINESS_HOUR_END: ${BUSINESS_HOUR_END:-18:00}
+      BUSINESS_DAYS: ${BUSINESS_DAYS:-0,1,2,3,4}
+      UPLOAD_DIR: /app/uploads
+      MAX_UPLOAD_SIZE_MB: ${MAX_UPLOAD_SIZE_MB:-25}
+      SMTP_ENABLED: ${SMTP_ENABLED:-false}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD: ${SMTP_PASSWORD:-}
+      SMTP_FROM: ${SMTP_FROM:-ticketera@empresa.cl}
+      SMTP_TLS: ${SMTP_TLS:-true}
+      REPORTS_ENABLED: ${REPORTS_ENABLED:-true}
+      BACKUP_RETENTION_DAYS: ${BACKUP_RETENTION_DAYS:-30}
+    volumes:
+      - ticketera_uploads:/app/uploads
+    expose:
+      - "8000"
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL:-/api/v1}
+        VITE_APP_TIMEZONE: ${APP_TIMEZONE:-America/Santiago}
+    container_name: ticketera-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "8080:80"
+
+volumes:
+  ticketera_postgres_data:
+  ticketera_uploads:
