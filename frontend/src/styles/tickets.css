@@ -1,0 +1,362 @@
+.ticket-table, table { width: 100%; }
+.ticket-table { background: var(--card); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow); }
+table { border-collapse: collapse; }
+th, td { padding: 14px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+th { background: var(--surface); font-size: 13px; color: var(--muted); }
+tbody tr { cursor: pointer; }
+tbody tr:hover { background: var(--primary-soft); }
+small { color: var(--muted); }
+.badge { display: inline-flex; align-items: center; border-radius: 999px; padding: 5px 10px; font-size: 12px; font-weight: 800; background: var(--soft); color: #344054; }
+.badge.danger { background: var(--danger-soft); color: var(--danger); }
+.badge.warning { background: var(--warning-soft); color: var(--warning); }
+.badge.success { background: var(--success-soft); color: var(--success); }
+.badge.critical { background: var(--critical-soft); color: var(--critical); }
+.badge.info { background: var(--info-soft); color: #175cd3; }
+.badge.muted { background: var(--soft); color: #667085; }
+.ticket-detail-header { display: flex; justify-content: space-between; gap: 16px; align-items: flex-start; margin-bottom: 20px; }
+.badges { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+.detail-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 18px; margin-bottom: 18px; }
+.info { border-bottom: 1px solid var(--line); padding: 10px 0; }
+.info span { display: block; font-size: 12px; color: var(--muted); }
+.qa { border-top: 1px solid var(--line); padding: 12px 0; }
+.comment { border: 1px solid var(--line); border-radius: 14px; padding: 12px; margin: 10px 0; }
+.comment.internal { background: var(--warning-soft); }
+.comment.system { background: var(--soft); }
+.actions-panel { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 18px; }
+@media (max-width: 1000px) { .detail-grid, .actions-panel { grid-template-columns: 1fr; } }
+
+.enterprise-ticket-table th, .enterprise-ticket-table td { font-size: 13px; }
+.summary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px 18px; margin-bottom: 12px; }
+.timeline { position: relative; display: grid; gap: 12px; margin-top: 8px; }
+.timeline-item { border-left: 3px solid var(--primary); background: var(--surface); border-radius: 12px; padding: 12px 14px; }
+.timeline-item span { display: block; color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+.timeline-item strong { display: block; }
+.timeline-item em { display: block; color: var(--muted); font-style: normal; font-size: 12px; margin-top: 2px; }
+.timeline-item p { margin: 6px 0 0; }
+.attachment-form { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 12px 0; }
+.attachment-form input { max-width: 460px; }
+.attachment-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.attachment-card { display: grid; gap: 4px; border: 1px solid var(--line); border-radius: 14px; padding: 12px; text-decoration: none; background: var(--surface); }
+.attachment-card:hover { border-color: var(--primary); background: var(--primary-soft); }
+@media (max-width: 1100px) { .attachment-grid, .summary-grid { grid-template-columns: 1fr; } }
+
+
+.paste-zone { border: 1px dashed var(--primary); background: var(--primary-soft); border-radius: 14px; padding: 12px; color: var(--muted); min-width: 280px; outline: none; }
+.paste-zone:focus { box-shadow: 0 0 0 3px rgba(21, 112, 239, .16); }
+.selected-files { display: flex; flex-wrap: wrap; gap: 8px; width: 100%; }
+.selected-files span { display: inline-flex; gap: 8px; align-items: center; border: 1px solid var(--line); border-radius: 999px; padding: 6px 8px 6px 10px; background: var(--soft); font-size: 12px; }
+.selected-files button { border: 0; background: var(--card); color: var(--danger); border-radius: 999px; cursor: pointer; width: 20px; height: 20px; }
+
+.enterprise-detail-header { background: linear-gradient(135deg, var(--card), var(--surface)); border: 1px solid var(--line); border-radius: 22px; padding: 18px; box-shadow: var(--shadow); }
+.comment-thread { display: grid; gap: 12px; margin: 14px 0; }
+.comment { background: var(--card); }
+.comment.public { border-left: 4px solid var(--primary); }
+.comment.internal { border-left: 4px solid var(--warning); }
+.comment.system { border-left: 4px solid var(--muted); }
+.comment-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+.comment-attachments { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 10px; }
+.attachment-card { grid-template-columns: auto 1fr; align-items: center; }
+.attachment-card .attachment-icon { grid-row: span 2; font-size: 22px; }
+.evidence-composer { display: grid; grid-template-columns: minmax(220px, 420px) 1fr; gap: 10px; align-items: center; }
+.evidence-comment-form { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px; }
+@media (max-width: 900px) { .comment-attachments, .evidence-composer { grid-template-columns: 1fr; } }
+
+/* v1.0.0.14 - detalle de ticket enterprise */
+.ticket-detail-page { display: grid; gap: 16px; }
+.ticket-progress {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  padding: 14px;
+}
+.progress-step {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  justify-items: center;
+  text-align: center;
+  color: var(--muted);
+}
+.progress-step span {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-weight: 900;
+}
+.progress-step.done span { background: var(--primary-soft); color: var(--primary); border-color: var(--primary); }
+.progress-step.current span { background: var(--primary); color: #fff; }
+.progress-step strong { font-size: 12px; }
+.enterprise-detail-grid { align-items: stretch; }
+.detail-main-card h3 { margin: 14px 0 6px; }
+.ticket-description-blocks {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+.ticket-description-blocks > div {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 12px;
+}
+.ticket-description-blocks p { margin: 0; }
+.side-card .info:last-child { border-bottom: 0; }
+.enterprise-actions-panel {
+  grid-template-columns: 1.1fr 2fr 1.2fr;
+  align-items: end;
+}
+.status-change-form {
+  display: grid;
+  grid-template-columns: minmax(180px, .7fr) minmax(240px, 1fr) auto;
+  gap: 10px;
+  align-items: end;
+}
+.enhanced-timeline .timeline-item { border-left-width: 4px; box-shadow: 0 8px 24px rgba(15, 23, 42, .05); }
+@media (max-width: 1100px) {
+  .ticket-progress { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .enterprise-actions-panel,
+  .status-change-form,
+  .ticket-description-blocks { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) { .ticket-progress { grid-template-columns: 1fr 1fr; } }
+
+
+/* v1.0.0.16 - Kanban operativo */
+.kanban-page { display: grid; gap: 16px; }
+.kanban-toolbar {
+  display: grid;
+  grid-template-columns: minmax(260px, 1.4fr) repeat(4, minmax(160px, .7fr)) auto;
+  gap: 12px;
+  align-items: end;
+}
+.kanban-toolbar label { display: grid; gap: 6px; margin: 0; color: var(--muted); font-size: 12px; font-weight: 800; }
+.kanban-toolbar input,
+.kanban-toolbar select {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--card);
+  color: var(--text);
+  border-radius: 12px;
+  padding: 10px 12px;
+  outline: none;
+}
+.kanban-toolbar input:focus,
+.kanban-toolbar select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(21, 112, 239, .16); }
+.search-field { position: relative; }
+.search-field svg { position: absolute; left: 12px; bottom: 12px; color: var(--muted); }
+.search-field input { padding-left: 36px; }
+.checkbox-filter { align-self: center; display: flex !important; flex-direction: row; align-items: center; gap: 8px !important; white-space: nowrap; }
+.checkbox-filter input { width: auto; }
+.ghost-button {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--text);
+  padding: 9px 12px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+.ghost-button:hover { border-color: var(--primary); background: var(--primary-soft); color: var(--text-strong); }
+.ghost-button.primary-lite { color: var(--primary); font-weight: 800; }
+.kanban-summary-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+.kanban-summary-card {
+  background: var(--card-gradient);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+.kanban-summary-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: linear-gradient(180deg, var(--primary), var(--accent)); }
+.kanban-summary-card span { display: block; color: var(--muted); font-size: 12px; font-weight: 800; }
+.kanban-summary-card strong { display: block; margin-top: 4px; font-size: 26px; }
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(280px, 1fr));
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
+.kanban-column {
+  min-width: 280px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 330px);
+  min-height: 420px;
+}
+.kanban-column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-bottom: 1px solid var(--line);
+  position: sticky;
+  top: 0;
+  background: var(--surface);
+  border-radius: 18px 18px 0 0;
+  z-index: 1;
+}
+.kanban-column-header > div { display: flex; align-items: center; gap: 8px; }
+.kanban-column-header strong { color: var(--muted); }
+.kanban-column-body { display: grid; gap: 12px; padding: 12px; overflow-y: auto; }
+.kanban-card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, .06);
+  display: grid;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+:root[data-theme="dark"] .kanban-card { box-shadow: 0 14px 34px rgba(0, 0, 0, .24); }
+.kanban-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 4px; background: var(--primary); }
+.kanban-card.severity-alta::before { background: var(--danger); }
+.kanban-card.severity-media::before { background: var(--warning); }
+.kanban-card.severity-baja::before { background: var(--success); }
+.kanban-card.severity-critica-sos::before { background: var(--critical); }
+.kanban-card-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.kanban-card-title {
+  border: 0;
+  background: transparent;
+  color: var(--text-strong);
+  font-weight: 900;
+  text-align: left;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1.3;
+}
+.kanban-card-title:hover { color: var(--primary); text-decoration: underline; }
+.kanban-card-meta { display: grid; gap: 4px; color: var(--muted); font-size: 12px; }
+.kanban-card-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.kanban-card-footer small { display: block; color: var(--muted); font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .04em; }
+.kanban-card-footer span { display: block; margin-top: 2px; font-size: 12px; color: var(--text); }
+.kanban-card-dates { display: grid; gap: 6px; color: var(--muted); font-size: 12px; }
+.kanban-card-dates span { display: inline-flex; align-items: center; gap: 6px; }
+.kanban-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.kanban-actions .ghost-button { flex: 1; min-width: 110px; padding: 8px 9px; font-size: 12px; }
+.kanban-empty {
+  border: 1px dashed var(--line);
+  border-radius: 14px;
+  padding: 18px;
+  text-align: center;
+  color: var(--muted);
+  background: var(--card);
+}
+.kanban-help-panel { display: flex; align-items: flex-start; gap: 10px; }
+.kanban-help-panel p { margin: 4px 0 0; }
+@media (max-width: 1400px) {
+  .kanban-toolbar { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .kanban-summary-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 760px) {
+  .kanban-toolbar,
+  .kanban-summary-grid { grid-template-columns: 1fr; }
+  .kanban-board { grid-template-columns: repeat(6, minmax(260px, 1fr)); }
+}
+
+/* v1.0.0.19 - SLA avanzado */
+.sla-control-card { border-left: 4px solid var(--primary); }
+.sla-progress-row {
+  display: grid;
+  grid-template-columns: minmax(220px, .6fr) 1fr;
+  gap: 16px;
+  align-items: center;
+  margin: 12px 0 16px;
+}
+.sla-progress-info { display: grid; gap: 4px; }
+.sla-progress-info strong { font-size: 20px; }
+.sla-progress-info span { color: var(--muted); }
+.sla-progress-track {
+  height: 14px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.sla-progress-track > div {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width .25s ease;
+}
+.sla-progress-track.warning_75 > div,
+.sla-progress-track.paused > div { background: linear-gradient(90deg, var(--warning), #fdb022); }
+.sla-progress-track.warning_90 > div,
+.sla-progress-track.breached > div,
+.sla-progress-track.completed_late > div { background: linear-gradient(90deg, var(--danger), var(--critical)); }
+.sla-progress-track.completed_on_time > div { background: linear-gradient(90deg, var(--success), #12b76a); }
+.sla-progress-track.mini { height: 8px; margin: 8px 0; }
+.sla-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px 18px;
+}
+.kanban-sla-mini { display: grid; gap: 6px; margin-top: 8px; }
+@media (max-width: 1000px) {
+  .sla-progress-row, .sla-detail-grid { grid-template-columns: 1fr; }
+}
+
+/* v1.0.0.20 - indicadores de tiempo del ticket */
+.ticket-time-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 14px 0 16px;
+}
+.time-metric-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 14px;
+  display: grid;
+  gap: 5px;
+  min-height: 112px;
+}
+.time-metric-card.primary {
+  background: linear-gradient(135deg, var(--primary-soft), var(--surface));
+  border-color: rgba(21, 112, 239, .34);
+}
+.time-metric-card span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.time-metric-card strong {
+  color: var(--text-strong);
+  font-size: 22px;
+  line-height: 1.2;
+}
+.time-metric-card small {
+  color: var(--muted);
+  line-height: 1.4;
+}
+.enterprise-ticket-table td strong + br + small,
+.enterprise-ticket-table td small {
+  color: var(--muted);
+}
+@media (max-width: 1000px) {
+  .ticket-time-grid { grid-template-columns: 1fr; }
+}

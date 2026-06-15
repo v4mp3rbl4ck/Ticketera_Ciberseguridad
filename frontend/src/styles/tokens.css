@@ -1,0 +1,73 @@
+ :root {
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #14213d;
+  background: #eef3f9;
+  --bg: #eef3f9;
+  --card: #ffffff;
+  --surface: #f8fafd;
+  --soft: #eef4fb;
+  --text: #14213d;
+  --text-strong: #0b1220;
+  --muted: #667085;
+  --line: #d8e2ee;
+  --primary: #175cd3;
+  --primary-dark: #164c9f;
+  --primary-soft: #e8f1ff;
+  --accent: #0891b2;
+  --accent-soft: #e6f8fc;
+  --sidebar-bg: #0b1220;
+  --sidebar-hover: #162033;
+  --topbar-bg: rgba(255, 255, 255, .86);
+  --danger: #d92d20;
+  --danger-soft: #fef3f2;
+  --warning: #b54708;
+  --warning-soft: #fffaeb;
+  --success: #027a48;
+  --success-soft: #ecfdf3;
+  --critical: #7a271a;
+  --critical-soft: #fff1f3;
+  --info: #175cd3;
+  --info-soft: #eff8ff;
+  --shadow: 0 16px 44px rgba(15, 23, 42, 0.08);
+  --card-gradient: linear-gradient(180deg, var(--card), var(--surface));
+}
+
+:root[data-theme="dark"] {
+  color: #e5eefc;
+  background: #07111f;
+  --bg: #07111f;
+  --card: #0f1b2d;
+  --surface: #111f33;
+  --soft: #14243a;
+  --text: #e5eefc;
+  --text-strong: #ffffff;
+  --muted: #9fb0c8;
+  --line: #263a55;
+  --primary: #5aa2ff;
+  --primary-dark: #357bd7;
+  --primary-soft: #102a4c;
+  --accent: #22d3ee;
+  --accent-soft: #123642;
+  --sidebar-bg: #050b14;
+  --sidebar-hover: #122033;
+  --topbar-bg: rgba(15, 27, 45, .88);
+  --danger: #ff7b72;
+  --danger-soft: #391b1d;
+  --warning: #facc15;
+  --warning-soft: #382b12;
+  --success: #4ade80;
+  --success-soft: #10331f;
+  --critical: #fb7185;
+  --critical-soft: #351822;
+  --info: #93c5fd;
+  --info-soft: #102a4c;
+  --shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+  --card-gradient: linear-gradient(180deg, var(--card), var(--surface));
+}
+
+* { box-sizing: border-box; }
+html { background: var(--bg); }
+body { margin: 0; background: var(--bg); color: var(--text); }
+button, input, textarea, select { font: inherit; }
+a { color: inherit; }
+::selection { background: var(--primary-soft); color: var(--text-strong); }
