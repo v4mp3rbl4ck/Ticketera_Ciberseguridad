@@ -319,6 +319,4 @@ PASSWORD_REQUIRE_SPECIAL=true
 LOGIN_RATE_LIMIT_ATTEMPTS=5
 LOGIN_RATE_LIMIT_WINDOW_SECONDS=300
 ```
-# Ticketera_Ciberseguridad
-# Ticketera_Ciberseguridad
-# Ticketera_Ciberseguridad
+
